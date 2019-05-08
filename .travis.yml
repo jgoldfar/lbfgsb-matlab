@@ -1,3 +1,7 @@
+dist: xenial
+
+sudo: false
+
 language: cpp
 
 os:
@@ -7,3 +11,27 @@ os:
 compiler:
   - clang
   - gcc
+
+addons:
+  apt:
+    packages:
+      - build-essential
+      - gfortran
+      - octave
+      - liboctave-dev
+  homebrew:
+    packages:
+      - gcc
+      - octave
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}/src
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]] ; then
+      make oct OCTAVE_INCLUDE=/usr/include/octave-4.0.0/octave ;
+    fi
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]] ; then
+      make oct OCTAVE_INCLUDE=/usr/local/Cellar/octave/4.4.0_1/include/octave-4.4.0/octave ;
+    fi
+  - make install INSTALLDIR=${TRAVIS_BUILD_DIR}/usr ;

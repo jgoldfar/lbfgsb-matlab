@@ -26,7 +26,8 @@ MATLAB_LIB = -L$(MATLAB_HOME)/bin/glnxa64 -lmex
 # MATLAB_LIB = -L$(MATLAB_HOME)/bin/maci -lmex
 
 # CHOOSE OCTAVE CONFIGURATION
-OCTAVE_INCLUDE = /usr/local/include/octave-3.2.4/octave
+OCTAVE_VERSION?=3.2.4
+OCTAVE_INCLUDE?=/usr/local/include/octave-${OCTAVE_VERSION}/octave
 OCT = mkoctfile
 
 # CHOOSE L-BFGS-B CONFIGURATION
@@ -63,10 +64,10 @@ CFLAGS = -O3 -fPIC -pthread -Wall -Werror -ansi -ffast-math \
 # If you need to specify extra directories where to look for libraries, 
 # write the paths of the directories, separated by a white space.
 #LIBDIRS = /usr/lib/gcc/x86_64-linux-gnu/4.8/
-LIBDIRS = 
+LIBDIRS =
 
 # Choose your installation directory relative to the src directory.
-INSTALLDIR = ../lib
+INSTALLDIR?=../lib
 
 ######################################################################
 ### Do not edit below ################################################
@@ -96,15 +97,21 @@ octave: $(TARGET)_octave tidy
 oct: octave
 
 $(TARGET)_mex: $(OBJS)
-	$(MEX) -cxx CXX=$(CXX) CC=$(CXX) FC=$(FCC) LD=$(CXX) \
-	-l$(FORTRAN_LIB) -lm -O -output $@ $^
+	$(MEX) -cxx \
+		CXX=$(CXX) \
+		CC=$(CXX) \
+		FC=$(FCC) \
+		LD=$(CXX) \
+		-l$(FORTRAN_LIB) \
+		-lm \
+		-O -output $@ $^
 
 $(TARGET)_nomex: $(OBJS)
 	$(CXX) $^ -shared -o $(TARGET).$(MEX_SUFFIX) $(MATLAB_LIB) \
 	$(addprefix -L,$(LIBDIRS)) -l$(FORTRAN_LIB) -lm
 
 $(TARGET)_octave: $(OBJS)
-	$(OCT) --mex -o $(TARGET).mex $^ $(LIBS)$
+	$(OCT) --mex -o $(TARGET).mex $^ $(LIBS)
 
 create-install-dir:
 	@if [ ! -e $(INSTALLDIR) ]; then \

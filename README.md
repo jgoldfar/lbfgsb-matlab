@@ -10,7 +10,7 @@ the L-BFGS-B solver (version 3.0), and is compatible with
 If you are having difficulties building the MEX files following the 
 installation instructions below, see 
 [this alternate solution](http://github.com/pcarbo/lbfgsb-matlab/issues/2), 
-which may work better for your setup.  
+which may work better for your setup.
 
 ### Overview
 
@@ -74,7 +74,7 @@ instructions are slightly out of date, and suggestions for improving
 these installation instructions are welcome.
 
 We will create a MEX file, which is basically a file that contains a
-routine that can be called from MATLAB as if it were a built-it
+routine that can be called from MATLAB as if it were a built-in
 function. To learn about MEX files, I refer you to
 [this document](http://www.mathworks.com/support/tech-notes/1600/1605.html)
 on the MathWorks website.
@@ -147,8 +147,9 @@ If that doesn't work (e.g. you get linking errors, or it makes MATLAB
 crash when you try to call it), then you may have to follow the more
 complicated installation instructions below.
 
-**Modify the Makefile.** You are almost ready to build the MEX
-file. But before you do so, you need to edit the Makefile to coincide
+**Modify the Makefile or set the appropriate variables**
+You are almost ready to build the MEX file.
+But before you do so, you need to edit the Makefile to coincide
 with your system setup. Edit the Makefile located inside the
 LBFGSB_HOME/src directory, following the instructions provided in this
 file. With this Makefile you may create:
@@ -190,7 +191,16 @@ LBFGSB_HOME/src directory (see Installation below).
 It may be helpful to look at the GCC documentation in order to
 understand what these various compiler flags mean.
 
-**Build the MEX file.** If you are in the directory containing all the
+_As an alternative_, the necessary options can be set on the command
+line, e.g.
+
+```shell
+make oct OCTAVE_INCLUDE=/usr/include/octave-4.0.0/octave
+make install INSTALLDIR=/usr/local/share/octave/site/m/
+```
+
+**Build the MEX file**
+If you are in the directory containing all the
 source files, calling **make** at the command prompt will first
 compile the Fortran and C++ source files into object code (.o
 files). After that, the make program calls the MEX script, which links
