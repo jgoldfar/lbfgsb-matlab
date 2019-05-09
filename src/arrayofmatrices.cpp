@@ -1,14 +1,14 @@
 #ifdef __linux__
   #include "mex.h"
 #else
-  #include "matrix.h"
+  #include "Matrix.h"
 #endif
 
 #include "arrayofmatrices.h"
 
 // Function definitions for class ArrayOfMatrices.
 // -----------------------------------------------------------------
-ArrayOfMatrices::ArrayOfMatrices (const mxArray* ptr) 
+ArrayOfMatrices::ArrayOfMatrices (const mxArray* ptr)
   : Array<Matrix*>(getnummatlabmatrices(ptr)) {
   setvalue(0);
 
